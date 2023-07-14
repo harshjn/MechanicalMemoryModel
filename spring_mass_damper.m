@@ -10,5 +10,5 @@ function dy = spring_mass_damper(t, y, m, b, k, F0, f)
 %         k=20;
 %     end
 
-    dy(2) = STEPfunc(F0,t,y,f)/m - (b/m)*y(2) - (k/m)*y(1);
+    dy(2) = STEPfunc(F0,t,k,b,y,f)/m - (b)*y(2)/m;
 end

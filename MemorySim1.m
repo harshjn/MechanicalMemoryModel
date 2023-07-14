@@ -9,9 +9,9 @@ tic
 % Parameters
 m  = 1;     % mass
 b  = 10;    % damping constant
-k  = 20;  % spring consta
-F0 = 2;     % amplitude of external force
-F_fric_mag = 2;
+k  =10;  % spring consta
+F0 = 0.25;     % amplitude of external force
+F_fric_mag = 0.1;
 f=F_fric_mag;
 x_eq = f/k;
 
@@ -60,8 +60,11 @@ hold on
 plot(t, y(:, 1));
 % plot(t,ForceMat)
 %%
-% figure;
-% % plot(y(1:10:end,1),ForceMat(1:10:end))
+figure
+yyaxis left
+plot(t,-1*smooth(ForceMat,10))
+figure;
+plot(y(1:end,1),-1*smooth(ForceMat,10),'.')
 % ylim([0 10])
 % 
 % % Force is F_ind=F_fric-ky
@@ -69,4 +72,9 @@ plot(t, y(:, 1));
 % toc
 % disp(max(y(:,1)))
 
-%%
+%% Plot hysteresis
+I_applied = F_applied/max(F_applied)*0.01;
+PosMat=interp1(linspace(0,20,200),I_applied,t);
+
+scatter(circshift(PosMat,20),-smooth(ForceMat,30))
+%Circshift is used to account for the delay. 

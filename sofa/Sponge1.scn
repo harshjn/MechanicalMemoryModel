@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <!-- NEW DEFAULT SOFA SCENE (Thanks to Jeremy Ringard for the caduceus model) -->
-<Node name="root" gravity="0 -9.8 0" dt="0.1">
+<Node name="root" gravity="0 -9.8 0" dt="0.01">
     <VisualStyle displayFlags="showCollisionModels" />
 
     <Node name="RequiredPlugins">
@@ -45,7 +45,7 @@
 
     <Node name="Snake" >
 
-		<MeshGmshLoader name="SnakeMeshLoader" filename="mesh/SpongeVol.msh" />
+		<MeshGmshLoader name="SnakeMeshLoader" filename="SpongeVol.msh" />
         <MeshTopology src="@SnakeMeshLoader" name="SnakeMeshTopology" />
         <MechanicalObject scale="1" src="@SnakeMeshTopology" name="SnakeMechanicalObject" />
 		<TetrahedronSetTopologyContainer src="@SnakeMeshLoader" />
@@ -59,7 +59,7 @@
         <UncoupledConstraintCorrection useOdeSolverIntegrationFactors="0"/>
 
         <Node name="Collis">
-            <MeshOBJLoader name="loader" filename="mesh/sponge.obj" />
+            <MeshOBJLoader name="loader" filename="Sponge.obj" />
             <MeshTopology src="@loader" />
             <MechanicalObject scale="1"  src="@loader" name="CollisModel" />
             <TriangleCollisionModel  selfCollision="0" />
@@ -91,26 +91,24 @@
 
 <Node name="CompressingBlock">
 
-    <!-- Define the block's geometry. Adjust size and position as needed. -->
-    <GridTopology name="blockGrid" nx="10" ny="10" nz="10" size="10 10 10" p0="0 50 0" />
+    <!-- Define the block's geometry. Adjust position for starting height. -->
+    <MeshTopology name="blockGrid" triangles="0 1 2  2 1 3" quads="" position="-100 55 -100  100 55 -100  -100 55 100  100 55 100" />
     <MechanicalObject template="Vec3d" name="blockMechanicalObject" />
 
-    <!-- Assign mass to the block (making it "heavy"). -->
+    <!-- Assign mass to the block to make it "heavy". -->
     <UniformMass totalMass="1000" />
 
     <!-- Define the collision model for the block. -->
-    <TriangleCollisionModel name="BlockCollisionModel" />
-    <LineCollisionModel />
-    <PointCollisionModel />
+    <TriangleCollisionModel name="BlockCollisionModel" selfCollision="0" />
+    <LineCollisionModel selfCollision="0" />
+    <PointCollisionModel selfCollision="0" />
 
     <!-- Visualization for the block. -->
     <OglModel name="blockVisual" color="1 0 0" src="@blockGrid" />
     <BarycentricMapping input="@blockMechanicalObject" output="@blockVisual" />
 
     <!-- Define the block's movement. Here, it moves downward at a rate of -1 unit per simulation step. -->
-    <LinearMovementConstraint keyTimes="0 1" movements="0 0 0  0 -1 0" />
 
+    <LinearMovementConstraint indices="0 1 2 3" keyTimes="0 1 2 3 4 5 6" movements="0 0 0  0 -20 0  0 -20 0  0 -20 0  0 -30 0  0 -30 0  0 -30 0 " />
 </Node>
-
-
 </Node>
